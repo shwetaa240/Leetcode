@@ -8,12 +8,22 @@ public:
             {nums[i]*=2;
                 nums[i+1]=0;
             }
+           
+        }
+        int n=nums.size();
+        i=0;
+        while(i<n)
+        {
             if(nums[i]!=0)
             {
-                if(i!=j)
-                swap(nums[i],nums[j]);
-                j++;
+                nums[j++]=nums[i];
             }
+            i++;
+        }
+        while(j<n)
+        {
+            nums[j]=0;
+            j++;
         }
         return nums;
     }
