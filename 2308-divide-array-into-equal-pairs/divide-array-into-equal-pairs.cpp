@@ -1,16 +1,13 @@
 class Solution {
 public:
     bool divideArray(vector<int>& nums) {
-        unordered_set<int> st;
-        for(int i=0;i<nums.size();i++)
-        {
-            if(!st.count(nums[i]))
-            st.insert(nums[i]);
-            else
-            st.erase(nums[i]);
+        int ans = 0,i;
+        sort(nums.begin(), nums.end());
+        for (i = 0; i < nums.size(); i+=2) {
+           ans=nums[i]^nums[i+1];
+           if(ans!=0)
+           return false;
         }
-        if(st.empty())
         return true;
-        return false;
     }
 };
