@@ -1,20 +1,27 @@
 class Solution {
 public:
     long long dividePlayers(vector<int>& skill) {
-        int i,j,n=skill.size(),sum=0,prev=0;
+        int i,j,n=skill.size(),sum=0,rem=0;
         long long chem=0;
-        i=0,j=n-1;
-        sort(skill.begin(),skill.end());
-        prev=skill[i]+skill[j];
-        while(i<j)
+        vector<int>hash(10001,0) ;
+        for(auto &s:skill)
         {
-          sum=skill[i]+skill[j];
-          if(prev!=sum)
-          return -1;
-          chem+=(long long)skill[i]*(long long)skill[j];
-          i++;
-          j--;
+            hash[s]++;
+            sum+=s;
         }
-        return chem;
+        int teams=n/2;
+         int tar=sum/teams;
+        if(sum%teams!=0)
+        return -1;
+        for(i=0;i<n;i++)
+        {
+           rem=tar-skill[i];
+           if(hash[rem]<=0)
+           return -1;
+           chem+=((long long)skill[i]*(long long)rem);
+           hash[rem]--;
+        }
+
+        return chem/2;
     }
 };
