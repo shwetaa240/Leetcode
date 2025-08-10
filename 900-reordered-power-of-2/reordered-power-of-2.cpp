@@ -3,7 +3,7 @@ public:
     bool reorderedPowerOf2(int n) {
     
     int i,power;
-    string t=to_string(n);
+    string t=to_string(n);  //could have been in function
     sort(t.begin(),t.end());
     for(i=0;i<=31;i++)
     {    
