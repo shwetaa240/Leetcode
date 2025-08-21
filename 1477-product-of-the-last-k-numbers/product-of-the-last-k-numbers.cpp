@@ -1,8 +1,8 @@
 class ProductOfNumbers {
 public:
-    vector<int> arr;
+      vector<int> arr;
     ProductOfNumbers() {
-
+     arr={0};
     }
     
     void add(int num) {
