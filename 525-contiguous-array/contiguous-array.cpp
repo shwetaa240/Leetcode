@@ -1,30 +1,20 @@
 class Solution {
 public:
     int findMaxLength(vector<int>& nums) {
-       int n=nums.size(),i;
-       vector<int> sum(n); 
-       unordered_map<int,int> premap;
+        unordered_map<int, int> premap;
         premap[0] = -1;  
-       int ans=0,j;
-       for(i=0;i<n;i++)
-       {
-        if(!nums[i])
-        nums[i]=-1;
-       }
-       sum[0]=nums[0];
-       premap[sum[0]]=0;
-    //    cout<<nums[0];
-       for(i=1;i<n;i++)
-       {
-        sum[i]=sum[i-1]+nums[i];
-        if(premap.find(sum[i])==premap.end())
-        premap[sum[i]]=i;
-       else
-       {
-        j=premap[sum[i]];
-        ans=max(ans,i-j);
-       }
-       }
-       return ans;
+        int sum = 0, ans = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+            sum += (nums[i] == 0 ? -1 : 1);
+
+            if (premap.find(sum) != premap.end()) {
+                ans = max(ans, i - premap[sum]);
+            } else {
+                premap[sum] = i;  // store first occurrence only
+            }
+        }
+
+        return ans;
     }
 };
