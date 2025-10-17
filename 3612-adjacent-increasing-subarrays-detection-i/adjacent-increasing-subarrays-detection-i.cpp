@@ -1,20 +1,20 @@
 class Solution {
 public:
     bool hasIncreasingSubarrays(vector<int>& nums, int k) {
-        int i=0,n=nums.size();
-        for(i=0;i<=n-2*k;i++)
-        {
-            if(isIncreasing(i,k,nums)&&isIncreasing(i+k,k,nums))
-            return true;
+        int n = nums.size();
+        vector<int> inc(n, 1);
+
+        // Build increasing-length array
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > nums[i - 1])
+                inc[i] = inc[i - 1] + 1;
         }
+
+        for (int i = k - 1; i + k < n; i++) {
+            if (inc[i] >= k && inc[i + k] >= k)
+                return true;
+        }
+
         return false;
-    }
-    bool isIncreasing(int i,int k,vector<int> &nums){
-           for(int j=i;j<i+k-1;j++)
-           {
-               if(nums[j]>=nums[j+1])
-               return false;
-           }
-           return true;
     }
 };
