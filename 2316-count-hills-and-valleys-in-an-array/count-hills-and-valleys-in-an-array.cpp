@@ -2,7 +2,10 @@ class Solution {
 public:
     int countHillValley(vector<int>& nums) {
         int c = 0, i=1, l, r,n=nums.size();
-        while(i<n-1) {
+        for (int i = 1; i < n - 1; i++) {
+//skip the duplicates
+ if (nums[i] == nums[i - 1]) continue;
+
             l = i - 1;
             r = i + 1;
             // find the closest neighbor which is non equal
@@ -17,7 +20,7 @@ public:
                     (nums[l] < nums[i] && nums[i] > nums[r]))
                     c++;
             }
-            i=r;
+        
         }
         return c;
     }
