@@ -6,7 +6,7 @@ public:
 
         while (r < n) {
             freq[f[r]]++;
-            while (freq.size() > 2) {
+            if(freq.size() > 2) {
                 freq[f[l]]--;
                 if (freq[f[l]] == 0)
                     freq.erase(f[l]);
