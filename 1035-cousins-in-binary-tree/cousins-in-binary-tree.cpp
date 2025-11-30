@@ -11,52 +11,35 @@
  */
 class Solution {
 public:
-    int d1,d2;
-    TreeNode* p1,*p2;
-
-    void solve(TreeNode* root,int depth,TreeNode* parent,int x,int y){
-        if(!root)
-        return ;
-
-        depth+=1;
-        parent=root;
-
-        if(root->left){
-            if(root->left->val==x){
-            d1=depth;
-            p1=root;
-            return;
-            } else if(root->left->val==y){
-                d2=depth;
-                p2=root;
-            } else
-                solve(root->left,depth,parent,x,y);
-            
-
-        }
-
-        if(root->right){
-            if(root->right->val==y){
-            d2=depth;
-            p2=root;
-            return;
-            } else if(root->right->val==x){
-            d1=depth;
-            p1=root;
-            return;
-            } else
-                solve(root->right,depth,parent,x,y);
-            
-
-        }        
-    }
-
     bool isCousins(TreeNode* root, int x, int y) {
-        solve(root,0,NULL,x,y);
-        if(d1==d2 and p1!=p2)
-        return 1;
+        queue<TreeNode*>q;
+        q.push(root);
 
-        return 0;
+        while(!q.empty()){
+            int n=q.size();
+             bool f1=false,f2=false;
+            for(int i=0;i<n;i++){
+                TreeNode*tmp=q.front();
+                q.pop();
+                //if values found
+                if(tmp->val==x) f1=true;
+                if(tmp->val==y) f2=true;
+                
+                //checking if parent is same
+                if(tmp->left && tmp->right){
+                if((tmp->left->val==x && tmp->right->val==y)|| (tmp->left->val==y && tmp->right->val==x))
+                    return false;
+                }
+                if(tmp->left)
+                    q.push(tmp->left);
+                if(tmp->right)
+                    q.push(tmp->right);
+            }
+          
+            if(f1&&f2)
+                return true;
+        }
         
+        return false;
     }
-};     
+};
