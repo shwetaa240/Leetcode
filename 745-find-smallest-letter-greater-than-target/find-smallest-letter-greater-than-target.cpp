@@ -2,12 +2,10 @@ class Solution {
 public:
     char nextGreatestLetter(vector<char>& le, char t) {
         int l=0,h=le.size()-1;
-        char ans=le[0];
-        // int y=(int)t=='z'?0:(int)t;
+        char ans=le[0]; // as z will be in last only so any value at zero index will work..! cyclic order 
         while(l<=h)
         {
           int m=(l+h)/2;
-        //   x=le[m]=='z'?0:(int)le[m];
           
           if((int)t<(int)le[m])
           {
