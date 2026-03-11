@@ -1,36 +1,56 @@
 class Solution {
 public:
-        // Using Priority queue (Min-heap)
-    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
-        vector<pair<int,int>> g[N+1];
-        for(int i=0;i<times.size();i++)
-            g[times[i][0]].push_back(make_pair(times[i][1],times[i][2]));
-        vector<int> dist(N+1, 1e9);
-        dist[K] = 0;
-        priority_queue<pair<int,int>, vector<pair<int,int>> , greater<pair<int,int>>> q;
-        q.push(make_pair(0,K));
-        pair<int,int> temp;
-        bool visit[N+1];
-        memset(visit, false, sizeof(visit));
-        while(!q.empty()){
-            temp = q.top();
-            q.pop();
-            int u = temp.second;
-            visit[u] = true;
-            for(int i=0;i<g[u].size();i++){
-                int v = g[u][i].first;
-                int weight = g[u][i].second;
-                if(visit[v]==false && dist[v] > dist[u] + weight){
-                    dist[v] = dist[u] + weight;
-                    q.push(make_pair(dist[v], v));
+    typedef pair<int,int> p;
+
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+
+        vector<vector<pair<int,int>>> adj(n+1);
+
+        for(auto &t:times)
+        {
+            int u=t[0];
+            int v=t[1];
+            int w=t[2];
+
+            adj[u].push_back({v,w});
+        }
+
+        priority_queue<p,vector<p>,greater<p>> pq;
+
+        vector<int> result(n+1,INT_MAX);
+
+        pq.push({0,k});
+        result[k]=0;
+
+        while(!pq.empty())
+        {
+            int dist=pq.top().first;
+            int node=pq.top().second;
+            pq.pop();
+
+            for(auto &it:adj[node])
+            {
+                int adjNode=it.first;
+                int wt=it.second;
+
+                if(dist+wt < result[adjNode])
+                {
+                    result[adjNode]=dist+wt;
+                    pq.push({result[adjNode],adjNode});
                 }
             }
         }
-        int ans = 0;
-        for(int i=1;i<dist.size();i++){
-            ans = max(ans, dist[i]);
+
+        int ans=0;
+
+        for(int i=1;i<=n;i++)
+        {
+            if(result[i]==INT_MAX)
+                return -1;
+
+            ans=max(ans,result[i]);
         }
-        if(ans==1e9) return -1;
+
         return ans;
     }
 };
