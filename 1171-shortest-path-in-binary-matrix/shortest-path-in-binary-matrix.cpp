@@ -1,28 +1,41 @@
 class Solution {
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        if (grid[0][0] || grid.back().back()) return -1;
-        int res = 2, len = 1, maxX = grid[0].size() - 1, maxY = grid.size() - 1;
         queue<pair<int, int>> q;
-        if (!maxX && !maxY) return 1 - (grid[0][0] << 1);
+        int ans = 0;
+        int m = grid.size(), n = grid[0].size();
+        if (m == 0 || n == 0 || grid[0][0] == 1  || grid[m-1][n-1]==1)
+            return -1;
+ 
+auto unSafe=[&](int x,int y){
+  return (x<0 || x>=m || y>=n || y<0 );
+};
+
         q.push({0, 0});
-        grid[0][0] = -1;
-        while (len) {
-            while (len--) {
-                auto [cx, cy] = q.front();
+        grid[0][0] = 1;
+        vector<vector<int>> dir{{0, -1}, {0, 1},  {1, 1},  {-1, -1},
+                                {-1, 1}, {1, -1}, {-1, 0}, {1, 0}};
+
+        while (!q.empty()) {
+            int size = q.size();
+            while (size--) {
+                int r = q.front().first;
+                int c = q.front().second;
                 q.pop();
-                for (int x = max(0, cx - 1), lmtX = min(cx + 1, maxX); x <= lmtX; x++) {
-                    for (int y = max(0, cy - 1), lmtY = min(cy + 1, maxY); y <= lmtY; y++) {
-                        if (x == maxX && y == maxY) return res;
-                        if (!grid[y][x]) {
-                            grid[y][x] = -1;
-                            q.push({x, y});
-                        }
+
+                if (r == m - 1 && c == n - 1)
+                    return ans + 1;
+
+                for (auto& d : dir) {
+                    int x = r + d[0];
+                    int y = c + d[1];
+                    if (!unSafe(x, y) && grid[x][y] == 0) {
+                        q.push({x, y});
+                        grid[x][y]=1;  //visited marked
                     }
                 }
             }
-            res++;
-            len = q.size();
+            ans++;
         }
         return -1;
     }
