@@ -2,43 +2,42 @@ class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dest, int k) {
 
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        queue<vector<int>> q; // {stops,node,cost}
 
         vector<vector<pair<int,int>>> adj(n);
 
         for(auto &f:flights)
             adj[f[0]].push_back({f[1],f[2]});
 
-        pq.push({0,src,0}); // {cost,node,stops}
+        q.push({0,src,0}); 
 
-        vector<int> stops(n,INT_MAX);
+        vector<int> minC(n,1e9);
+        minC[src]=0;
 
-        while(!pq.empty())
+        while(!q.empty())
         {
-            auto it = pq.top();
-            pq.pop();
+            auto it = q.front();
+            q.pop();
 
-            int cost = it[0];
-            int node = it[1];
-            int step = it[2];
+            int stops = it[0];
+            int node  = it[1];
+            int cost  = it[2];
 
-            if(node == dest) 
-                return cost;
-
-            if(step > k || step > stops[node]) 
-                continue;
-
-            stops[node] = step;
+            if(stops > k) continue;
 
             for(auto &x : adj[node])
             {
                 int next = x.first;
                 int price = x.second;
 
-                pq.push({cost + price, next, step + 1});
+                if(cost + price < minC[next])
+                {
+                    minC[next] = cost + price;
+                    q.push({stops+1, next, minC[next]});
+                }
             }
         }
 
-        return -1;
+        return minC[dest]==1e9 ? -1 : minC[dest];
     }
 };
