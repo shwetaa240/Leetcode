@@ -1,22 +1,42 @@
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     vector<Node*> neighbors;
+ *     Node(int val) {
+ *         this->val = val;
+ *         neighbors = vector<Node*>();
+ *     }
+ * };
+ */
 class Solution {
 public:
-    unordered_map<Node*, Node*> mp;
-
     Node* cloneGraph(Node* node) {
-        
-        if(node == NULL)
-            return NULL;
-
-        if(mp.find(node) != mp.end())
-            return mp[node];
-
-        Node* clone = new Node(node->val);
-        mp[node] = clone;
-
-        for(auto neigh : node->neighbors){
-            clone->neighbors.push_back(cloneGraph(neigh));
+        if (!node) {
+            return nullptr;
         }
 
-        return clone;
+        unordered_map<Node*, Node*> visited;
+        queue<Node*> q;
+
+        visited[node] = new Node(node->val);
+
+        q.push(node);
+
+        while (!q.empty()) {
+            Node* currNode = q.front();
+            q.pop();
+
+            for (Node* neighbor : currNode->neighbors) {
+                if (!visited.count(neighbor)) {
+                    visited[neighbor] = new Node(neighbor->val);
+                    q.push(neighbor);
+                }
+
+                visited[currNode]->neighbors.push_back(visited[neighbor]);
+            }
+        }
+
+        return visited[node];
     }
 };
