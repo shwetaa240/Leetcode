@@ -7,6 +7,7 @@ public:
 
         for (int i = 0; i <= m - k; i++) {
             for (int j = 0; j <= n - k; j++) {
+
                 vector<int> v;
                 for (int x = i; x < i + k; x++)
                     for (int y = j; y < j + k; y++)
@@ -18,10 +19,10 @@ public:
                 if (v.size() <= 1) {
                     ans[i][j] = 0;
                 } else {
-                    int mn = INT_MAX;
+                    int mini = INT_MAX;
                     for (int p = 0; p < (int)v.size() - 1; p++)
-                        mn = min(mn, v[p+1] - v[p]);
-                    ans[i][j] = mn;
+                        mini = min(mini, v[p+1] - v[p]);
+                    ans[i][j] = mini;
                 }
             }
         }
