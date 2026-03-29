@@ -22,9 +22,6 @@ public:
         
     }
 
-
-
-
     double frogPosition(int n, vector<vector<int>>& edges, int time, int x) {
         vector<int>ad[n+1];
         curr=time;
