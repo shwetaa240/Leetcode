@@ -1,10 +1,15 @@
 class Solution {
 public:
-    bool judgeCircle(string moves) {
-        if (moves.length() & 1) return false;
-        unordered_map<char, int> f;
-        for (char c : moves) f[c]++;
+  bool judgeCircle(string moves) {
+    int x = 0, y = 0;
 
-        return f['U'] == f['D'] && f['L'] == f['R'];
+    for (char c : moves) {
+        if (c == 'U') y++;
+        if (c == 'D') y--;
+        if (c == 'R') x++;
+        if (c == 'L') x--;
     }
+
+    return x == 0 && y == 0;
+}
 };
