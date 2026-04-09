@@ -1,23 +1,29 @@
 class Solution {
 public:
     int mirrorFrequency(string s) {
-        vector<int> f1(10), f2(26);
+        vector<int> freq(128, 0);
 
-        for (char &ch: s) {
-            if (ch <= '9' && ch >= '0') {
-                f1[ch-'0']++;
-            } else {
-                f2[ch-'a']++;
-            }
+        for (char c : s) {
+            freq[c]++;
         }
 
         int ans = 0;
-        for (int i = 0; i < 5; i++) {
-            ans += abs(f1[i] - f1[9 - i]);
-        }
 
-        for (int i = 0; i < 13; i++) {
-            ans += abs(f2[i] - f2[25 - i]);
+        for (char c : s) {
+            if (freq[c] == -1) continue; // already processed
+
+            char mirror;
+
+            if (isdigit(c)) {
+                mirror = '9' - (c - '0');
+            } else {
+                mirror = 'z' - (c - 'a');
+            }
+
+            ans += abs(freq[c] - freq[mirror]);
+
+            freq[c] = -1;
+            freq[mirror] = -1;
         }
 
         return ans;
