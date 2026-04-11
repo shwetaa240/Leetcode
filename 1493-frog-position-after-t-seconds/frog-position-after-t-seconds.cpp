@@ -1,39 +1,41 @@
 class Solution {
 public:
-    double ans=0;
-    int curr;
-    void dfs(vector<int>ad[],int i,int time,int targ,vector<int>&vis,double prob){
-        vis[i]=1;
-        if(targ==i){
-            if(time==curr)ans=prob;
-            else {
-                if(time<curr)
-                if(i!=1 && ad[i].size()<=1)ans=prob;
-            }
-            return;
-        }
-        for(auto x : ad[i]){
-            double sz=ad[i].size();
-            if(i!=1)sz--;
-            double p=1.0/sz;
-            if(!vis[x])
-             dfs(ad,x,time+1,targ,vis,prob*p);
-        }
+    double dfs(int node, int parent, int t, int target, vector<vector<int>>& adj) {
         
+        // If time is over
+        if (t == 0) {
+            return (node == target) ? 1.0 : 0.0;
+        }
+
+        int children = 0;
+        for (int nei : adj[node]) {
+            if (nei != parent) children++;
+        }
+
+        // If no children (leaf node)
+        if (children == 0) {
+            return (node == target) ? 1.0 : 0.0;
+        }
+
+        double prob = 0.0;
+
+        for (int nei : adj[node]) {
+            if (nei == parent) continue;
+
+            prob += dfs(nei, node, t - 1, target, adj) / children;
+        }
+
+        return prob;
     }
 
-    double frogPosition(int n, vector<vector<int>>& edges, int time, int x) {
-        vector<int>ad[n+1];
-        curr=time;
+    double frogPosition(int n, vector<vector<int>>& edges, int t, int target) {
+        vector<vector<int>> adj(n + 1);
 
-        for(auto x:edges){
-            ad[x[0]].push_back(x[1]);
-            ad[x[1]].push_back(x[0]);
+        for (auto &e : edges) {
+            adj[e[0]].push_back(e[1]);
+            adj[e[1]].push_back(e[0]);
         }
 
-        vector<int>vis(n+1,0);
-        dfs(ad,1,0,x,vis,1);
-        if(ad[1].size()==0 && x==1)return 1.0;
-       return ans;
+        return dfs(1, -1, t, target, adj);
     }
 };
