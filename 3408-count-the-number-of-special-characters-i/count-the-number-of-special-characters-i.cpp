@@ -1,20 +1,18 @@
 class Solution {
 public:
     int numberOfSpecialChars(string word) {
-        int cnt = 0, l = 0, u = 0;
-        for (char c = 'a'; c <= 'z'; c++)
-         {
-            l = 0, u = 0;
-            for (char ch : word) 
-            {
-                if (c == ch)
-                    l++;
-                if (toupper(c) == ch)
-                    u++;
+        
+        unordered_set<char> st(word.begin(), word.end());
+
+        int count = 0;
+
+        for(char ch = 'a'; ch <= 'z'; ch++) {
+
+            if(st.count(ch) && st.count(ch - 'a' + 'A')) {
+                count++;
             }
-            if (l > 0 && u > 0)
-                cnt++;
         }
-        return cnt;
+
+        return count;
     }
 };
