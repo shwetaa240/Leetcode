@@ -12,5 +12,5 @@ WHERE
         WHERE e2.departmentId = e.departmentId AND e2.salary >= e.salary
     ) <= 3
 ORDER BY
-    Department, Salary DESC;
+    Department;
 ;
