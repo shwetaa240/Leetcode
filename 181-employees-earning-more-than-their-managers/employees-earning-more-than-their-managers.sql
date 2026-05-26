@@ -1,6 +1,5 @@
-/* Write your PL/SQL query statement below */
-SELECT e1.name as Employee
-FROM Employee e1
-INNER JOIN Employee e2 
-ON e2.id=e1.managerId
-WHERE e1.salary>e2.salary;
+# Write your MySQL query statement below
+Select e.name as Employee
+From Employee e 
+Join Employee m 
+On e.managerId=m.id and e.salary>m.salary;
