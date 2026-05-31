@@ -1,6 +1,5 @@
 class Solution {
     public int digitFrequencyScore(int n) {
-        HashMap<Integer,Integer> mpp=new HashMap<>();
 
         int sum=0,num=n;
         while(num!=0)
