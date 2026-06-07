@@ -1,29 +1,23 @@
 class Solution {
 public:
 
-    int countSubstrings(string s) {
-       
-       int l=1,i,j=0,c=0,n=s.size();
-vector<vector<int>>dp (n,vector<int>(n,0));
-       for(l=1;l<=n;l++)
-       {
-        for(i=0;i+l-1<n;i++)
-          {
-            j=i+l-1;
-            if(i==j) dp[i][j]=1;
-            else if(i+1==j)
-            {
-              dp[i][j]=(s[i]==s[j]);
-            }
-            else
-            dp[i][j]= ((s[i]==s[j] )&& dp[i+1][j-1]);
-            
-            if(dp[i][j])
-           c++;   
-        
-          } 
-        }
-       return c;
+      // Expand around center (l, r) and count valid palindromes
+void expand(string& s, int l, int r, int& cnt) {
+    int n = s.length();
+    while (l >= 0 && r < n && s[l] == s[r]) {
+        cnt++;  // found one more palindromic substring
+        l--;
+        r++;
     }
+}
+
+int countSubstrings(string s) {
+    int n = s.size(), cnt = 0;
+    for (int i = 0; i < n; i++) {
+        expand(s, i, i, cnt);     // odd-length palindromes
+        expand(s, i, i + 1, cnt); // even-length palindromes
+    }
+    return cnt;
+}
 };
 
